@@ -38,7 +38,13 @@ class Solver
   # TODO: Starting from starting_pos, in/decrement row and col by 1
   # until a boundary is reached. Return false if another Queen is
   # present
-  def check_diagonal(starting_pos)
+  def check_diagonals(possible_solution)
+    # first take all coordinates and create a hash
+    possible_solution_hash = Hash.new
+    possible_solution.each do |queen_coords|
+      possible_solution_hash[queen_coords] = true
+    end
 
+    
   end
 end
