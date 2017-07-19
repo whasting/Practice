@@ -1,5 +1,6 @@
 require './board.rb'
 require '../perms.rb'
+require 'byebug'
 
 class Solver
   attr_accessor :solution
@@ -10,11 +11,13 @@ class Solver
 
   def solve
     possible_solutions = generate_moves
+    non_solutions = []
 
     # Each possible solution is a 2d array containing coords
     # [[0,0], [1,1], [2,2], [3,3], [4,4], [5,5], [6,6], [7,7]]
     possible_solutions.each do |possible_solution|
       @solution << possible_solution if check_solution(possible_solution)
+      non_solutions << possible_solution unless check_solution(possible_solution)
     end
 
     @solution
@@ -49,7 +52,6 @@ class Solver
 
   def check_solution(possible_solution)
     possible_solution_hash = possible_solution_to_hash(possible_solution)
-    p possible_solution_hash
 
     top_left = Proc.new { |pos| pos[0], pos[1] = pos[0] - 1, pos[1] - 1 }
     bottom_left = Proc.new { |pos| pos[0], pos[1] = pos[0] + 1, pos[1] - 1 }
@@ -75,7 +77,7 @@ class Solver
   def check_diagonals(coords, possible_solution_hash, &prc)
     prc ||= Proc.new { |arr| arr[0], arr[1] = arr[0] + 1, arr[1] + 1 }
 
-    selected_coords = prc.call(coords)
+    selected_coords = prc.call([coords[0], coords[1]])
     correct_solution = true
 
     while (selected_coords[0] > - 1 && selected_coords[1] > -1) &&
@@ -84,7 +86,7 @@ class Solver
 
       correct_solution = false if possible_solution_hash[selected_coords]
 
-      selected_coords = prc.call(selected_coords)
+      prc.call(selected_coords)
     end
 
     correct_solution
