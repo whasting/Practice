@@ -1,27 +1,38 @@
-// aproach
+function isPerm( data1, data2 ) {
+  return processData( data1 ) === processData( data2 );
+}
 
-function isPerm( data ) {
-  // what is data is an array of numbers and letters
+function processData( data ) {
+  let asciiSum = 0;
 
   if ( Array.isArray( data ) ) {
-    // approach 1
-    // join strings together
-    // add digits of numbers together
-    // compare sums from each
+
+    data.forEach((el) => {
+      asciiSum += processData( el );
+    });
 
   } else if ( typeof( data ) === 'string') {
 
+    asciiSum = stringToAsciiSum( data );
+
   } else if ( typeof ( data ) === 'number') {
 
+    const dataString = data.toString();
+    asciiSum = stringToAsciiSum( dataString );
+
   } else {
-    throw 'Parameter data must be an Array, string, or number';
+
+    throw "You must pass in two parameters of type Array, string, or number";
+
   }
+
+  return asciiSum;
 }
 
 function stringToAsciiSum( str ) {
   let asciiSum = 0;
 
-  for ( let i in str ) {
+  for ( let i = 0; i < str.length; i++ ) {
     asciiSum += str.charCodeAt( i );
   }
 
