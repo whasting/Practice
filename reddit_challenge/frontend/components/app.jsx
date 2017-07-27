@@ -5,7 +5,6 @@ const App = () => (
   <div>
     <h1>Reddit Challenge</h1>
     <PostsIndexContainer/>
-
   </div>
 );
 

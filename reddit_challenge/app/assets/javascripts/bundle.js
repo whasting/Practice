@@ -31187,17 +31187,17 @@ var PostIndexItem = function PostIndexItem(_ref) {
     _react2.default.createElement(
       "div",
       { className: "post-title" },
-      post.data.title
+      _react2.default.createElement(
+        "a",
+        { href: "http://www.reddit.com" + post.data.permalink },
+        post.data.title
+      )
     ),
     _react2.default.createElement(
       "div",
       { className: "post-score" },
-      post.data.score
-    ),
-    _react2.default.createElement(
-      "div",
-      { className: "post-link" },
-      "http://www.reddit.com" + post.data.permalink
+      post.data.score,
+      " Points"
     )
   );
 };
