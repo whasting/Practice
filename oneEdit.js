@@ -19,58 +19,64 @@ function oneEdit( originalStr, newStr ) {
 
   if (newLength === ogLength + 1) {
     // Insert (n + 1), skip char in newStr
-    // charOne === charTwo.next
-    while (j < newLength) {
-      if (originalStr[i] !== newStr[j]) {
-        diff++;
-        printVars(originalStr, newStr, i, j, diff);
-      } else {
-        printVars(originalStr, newStr, i, j, diff);
-        i++;
-      }
+    diff = checkInsertAndDelete(originalStr, newStr, newLength);
 
-
-      j++;
-      if (diff > 1) break;
-
-    }
   } else if (newLength === ogLength - 1) {
     // Delete (n - 1), skip char in originalStr
-    // charOne.next === charTwo
-    while (i < ogLength) {
-      if (originalStr[i] !== newStr[j]) {
-        diff++;
-        printVars(originalStr, newStr, i, j, diff);
-      } else {
-        printVars(originalStr, newStr, i, j, diff);
-        j++;
-      }
-
-      if (diff > 1) break;
-
-      i++;
-    }
+    diff = checkInsertAndDelete(originalStr, newStr, ogLength);
 
   } else if (newLength === ogLength) {
-    // Replace (n)
-    // Count differences
-    while (i < ogLength) {
-      if (originalStr[i] !== newStr[j]) {
-        diff++;
-      }
+    // Replace (n), count differences
+    diff = checkReplace(originalStr, newStr, ogLength);
+
+  } else {
+    return false;
+
+  }
+  return (diff < 2);
+
+}
+
+function checkInsertAndDelete(originalStr, newStr, strLength) {
+  let i = 0;
+  let j = 0;
+  let diff = 0;
+
+  while (i < strLength) {
+    if (originalStr[i] !== newStr[j]) {
+      diff++;
       printVars(originalStr, newStr, i, j, diff);
-
-      if (diff > 1) break;
-
-      i++;
+    } else {
+      printVars(originalStr, newStr, i, j, diff);
       j++;
     }
-  } else {
 
-    return false;
+    if (diff > 1) break;
+
+    i++;
   }
+  return diff;
+  
+}
 
-  return (diff < 2);
+function checkReplace(originalStr, newStr, strLength) {
+  let i = 0;
+  let j = 0;
+  let diff = 0;
+
+  while (i < strLength) {
+    if (originalStr[i] !== newStr[j]) {
+      diff++;
+    }
+    printVars(originalStr, newStr, i, j, diff);
+
+    if (diff > 1) break;
+
+    i++;
+    j++;
+  }
+  return diff;
+
 }
 
 function printVars(originalStr, newStr, i, j, diff) {
