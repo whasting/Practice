@@ -13,8 +13,6 @@ function oneEdit( originalStr, newStr ) {
 
   const ogLength = originalStr.length;
   const newLength = newStr.length;
-  let i = 0;
-  let j = 0;
   let diff = 0;
 
   if (newLength === ogLength + 1) {
@@ -56,7 +54,7 @@ function checkInsertAndDelete(originalStr, newStr, strLength) {
     i++;
   }
   return diff;
-  
+
 }
 
 function checkReplace(originalStr, newStr, strLength) {
