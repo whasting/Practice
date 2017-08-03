@@ -17,11 +17,11 @@ function oneEdit( originalStr, newStr ) {
 
   if (newLength === ogLength + 1) {
     // Insert (n + 1), skip char in newStr
-    diff = checkInsertAndDelete(originalStr, newStr, newLength);
+    diff = checkInsert(originalStr, newStr, newLength);
 
   } else if (newLength === ogLength - 1) {
     // Delete (n - 1), skip char in originalStr
-    diff = checkInsertAndDelete(originalStr, newStr, ogLength);
+    diff = checkDelete(originalStr, newStr, ogLength);
 
   } else if (newLength === ogLength) {
     // Replace (n), count differences
@@ -32,15 +32,31 @@ function oneEdit( originalStr, newStr ) {
 
   }
   return (diff < 2);
-
 }
 
-function checkInsertAndDelete(originalStr, newStr, strLength) {
+function checkInsert( originalStr, newStr, strLength ) {
   let i = 0;
+  let diff = 0;
+
+  for (let j = 0; j < strLength; j++) {
+    if (originalStr[i] !== newStr[j]) {
+      diff++;
+      printVars(originalStr, newStr, i, j, diff);
+    } else {
+      printVars(originalStr, newStr, i, j, diff);
+      i++;
+    }
+
+    if (diff > 1) break;
+  }
+  return diff;
+}
+
+function checkDelete( originalStr, newStr, strLength ) {
   let j = 0;
   let diff = 0;
 
-  while (i < strLength) {
+  for (let i = 0; i < strLength; i++) {
     if (originalStr[i] !== newStr[j]) {
       diff++;
       printVars(originalStr, newStr, i, j, diff);
@@ -50,34 +66,25 @@ function checkInsertAndDelete(originalStr, newStr, strLength) {
     }
 
     if (diff > 1) break;
-
-    i++;
   }
   return diff;
-
 }
 
-function checkReplace(originalStr, newStr, strLength) {
-  let i = 0;
-  let j = 0;
+function checkReplace( originalStr, newStr, strLength ) {
   let diff = 0;
 
-  while (i < strLength) {
-    if (originalStr[i] !== newStr[j]) {
+  for (let i = 0; i < strLength; i++) {
+    if (originalStr[i] !== newStr[i]) {
       diff++;
     }
-    printVars(originalStr, newStr, i, j, diff);
+    printVars(originalStr, newStr, i, i, diff);
 
     if (diff > 1) break;
-
-    i++;
-    j++;
   }
   return diff;
-
 }
 
-function printVars(originalStr, newStr, i, j, diff) {
+function printVars( originalStr, newStr, i, j, diff ) {
   console.log(
     [originalStr[i], newStr[j]],
     originalStr[i] !== newStr[j],
