@@ -3,39 +3,80 @@
 // Return true if the two strings are 0 - 1 edit apart
 // Return false if the two strings are more than one edit apart
 
-function oneEdit( strOne, strTwo ) {
-  if (strOne === strTwo) return true;
-
-  let charCount = {};
-  let ltr;
-
-  for (let i = 0; i < strOne.length; i++) {
-    ltr = strOne[i];
-
-    if (charCount[ltr]) {
-      charCount[ltr]++;
-    } else {
-      charCount[ltr] = 1;
-    }
+// ATTEMPT 2 **********************************************************
+function oneEdit( originalStr, newStr ) {
+  if (typeof(originalStr) !== 'string' || typeof(newStr) !== 'string') {
+    return false;
+  } else if (originalStr === newStr) {
+    return true;
   }
 
-  let oldLtrs = 0;
-  let newLtrs = 0;
+  const ogLength = originalStr.length;
+  const newLength = newStr.length;
+  let i = 0;
+  let j = 0;
+  let diff = 0;
 
-  for (let j = 0; j < strTwo.length; j++) {
-    ltr = strTwo[j];
+  if (newLength === ogLength + 1) {
+    // Insert (n + 1), skip char in newStr
+    // charOne === charTwo.next
+    while (j < newLength) {
+      if (originalStr[i] !== newStr[j]) {
+        diff++;
+        printVars(originalStr, newStr, i, j, diff);
+      } else {
+        printVars(originalStr, newStr, i, j, diff);
+        i++;
+      }
 
-    if (charCount[ltr] > 0) {
-      oldLtrs++;
-      charCount[ltr]--;
-    } else {
-      newLtrs++;
+
+      j++;
+      if (diff > 1) break;
+
     }
+  } else if (newLength === ogLength - 1) {
+    // Delete (n - 1), skip char in originalStr
+    // charOne.next === charTwo
+    while (i < ogLength) {
+      if (originalStr[i] !== newStr[j]) {
+        diff++;
+        printVars(originalStr, newStr, i, j, diff);
+      } else {
+        printVars(originalStr, newStr, i, j, diff);
+        j++;
+      }
+
+      if (diff > 1) break;
+
+      i++;
+    }
+
+  } else if (newLength === ogLength) {
+    // Replace (n)
+    // Count differences
+    while (i < ogLength) {
+      if (originalStr[i] !== newStr[j]) {
+        diff++;
+      }
+      printVars(originalStr, newStr, i, j, diff);
+
+      if (diff > 1) break;
+
+      i++;
+      j++;
+    }
+  } else {
+
+    return false;
   }
 
-  const replaceChr = (newLtrs === 1 && oldLtrs === strOne.length - 1);
-  const deleteChr = (newLtrs === 0 && oldLtrs === strOne.length - 1);
-  const insertChr = (newLtrs === 1 && oldLtrs === strOne.length);
+  return (diff < 2);
+}
 
-  return replaceChr || deleteChr || insertChr;
+function printVars(originalStr, newStr, i, j, diff) {
+  console.log(
+    [originalStr[i], newStr[j]],
+    originalStr[i] !== newStr[j],
+    {'i': i, 'j': j, 'diff': diff}
+  );
 }
